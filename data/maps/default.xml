@@ -1,0 +1,52 @@
+<world size="256 64 256" height_map="desert_hills">
+	<actor pos="10 6.164887 10" rot="0 0 0 1" mesh="knight" faction_id="0" hit_points="100" actor_rot="0">
+		<mind mode="controlled"/>
+	</actor>
+	<actor pos="10 5.862334 13.5" rot="0 0 0 1" mesh="knight" faction_id="0" hit_points="100" actor_rot="0">
+		<mind mode="controlled"/>
+	</actor>
+	<actor pos="10 5.69521 17" rot="0 0 0 1" mesh="knight" faction_id="0" hit_points="100" actor_rot="0">
+		<mind mode="controlled"/>
+	</actor>
+	<actor pos="7 6.221003 10" rot="0 0 0 1" mesh="archer" faction_id="0" hit_points="80" actor_rot="0">
+		<mind mode="controlled"/>
+	</actor>
+	<actor pos="7 5.893136 13.5" rot="0 0 0 1" mesh="archer" faction_id="0" hit_points="80" actor_rot="0">
+		<mind mode="controlled"/>
+	</actor>
+	<actor pos="7 5.940982 17" rot="0 0 0 1" mesh="archer" faction_id="0" hit_points="80" actor_rot="0">
+		<mind mode="controlled"/>
+	</actor>
+	<actor pos="39.883183 7.36897 45.891922" rot="0 0 0 1" mesh="knight" faction_id="1" hit_points="100" actor_rot="0">
+		<mind mode="self_aware"/>
+	</actor>
+	<actor pos="53.567997 6.416293 48.033489" rot="0 0 0 1" mesh="knight" faction_id="1" hit_points="100" actor_rot="0">
+		<mind mode="self_aware"/>
+	</actor>
+	<actor pos="24.925938 5.760738 45.758148" rot="0 0 0 1" mesh="knight" faction_id="1" hit_points="100" actor_rot="0">
+		<mind mode="self_aware"/>
+	</actor>
+	<actor pos="20.806892 5.791542 5.645377" rot="0 0 0 1" mesh="knight" faction_id="1" hit_points="100" actor_rot="0">
+		<mind mode="self_aware"/>
+	</actor>
+	<actor pos="31.550772 6.351991 45.131977" rot="0 0 0 1" mesh="knight" faction_id="1" hit_points="100" actor_rot="0">
+		<mind mode="self_aware"/>
+	</actor>
+	<actor pos="17.799673 5.874194 27.133133" rot="0 0 0 1" mesh="knight" faction_id="1" hit_points="100" actor_rot="0">
+		<mind mode="self_aware"/>
+	</actor>
+	<actor pos="29.536427 6.343783 17.319721" rot="0 0 0 1" mesh="knight" faction_id="1" hit_points="100" actor_rot="0">
+		<mind mode="self_aware"/>
+	</actor>
+	<actor pos="59.461308 8.295238 54.356964" rot="0 0 0 1" mesh="knight" faction_id="1" hit_points="100" actor_rot="0">
+		<mind mode="self_aware"/>
+	</actor>
+	<actor pos="34.689117 7.573259 27.63649" rot="0 0 0 1" mesh="knight" faction_id="1" hit_points="100" actor_rot="0">
+		<mind mode="self_aware"/>
+	</actor>
+	<actor pos="54.531105 7.331821 28.291817" rot="0 0 0 1" mesh="knight" faction_id="1" hit_points="100" actor_rot="0">
+		<mind mode="self_aware"/>
+	</actor>
+	<landmark pos="20 6.157201 20" rot="0 0 0 1" mesh="windmill"/>
+</world>
+

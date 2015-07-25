@@ -1,0 +1,13 @@
+*.swp
+*.vim
+/Makefile.local
+/.ycm_extra_conf.pyc
+/game
+/game_opt
+/recast_demo
+/assets_convert
+/build
+/media
+/temp/*
+/output/*
+/*.exe

@@ -1,0 +1,33 @@
+knight, archer meshes:
+  opengameart.org (Created by: Clement Wu, Nikolaus & Botanic, License: GPL 2.0)
+barrel.dae, crate.dae, barrel*.png crate*.png:
+  opengameart.org (Created by: https://www.behance.net/mallaria)
+
+moss texture:
+  "Moss texture based on this image available under CC-BY 2.0
+  by Robert Benner: http://www.flickr.com/photos/mullica/5750625959/in/photostream/"
+
+Seamless rock:
+  http://opengameart.org/node/8968
+
+Seamless:
+  http://opengameart.org/node/10157
+
+meshes/windmill.dae, textures/meshes/windmill.png:
+  http://opengameart.org/content/windmill-1
+
+ruins:
+  http://opengameart.org/content/destroyed-walls-3d-models
+
+
+http://opengameart.org/content/tropical-shrubs
+http://opengameart.org/content/uberpack-1
+http://opengameart.org/content/human-basaemeshes
+http://opengameart.org/content/wood-barrels-pack
+http://opengameart.org/content/low-poly-rocks
+http://opengameart.org/content/free-pillars-models
+http://opengameart.org/content/palm-plant
+http://opengameart.org/content/savinos-cemetery-redux
+http://opengameart.org/content/horse-drawn-carriage
+http://opengameart.org/content/the-ward-low-poly-character
+

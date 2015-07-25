@@ -1,0 +1,5 @@
+<mesh name="knight" mesh="warrior" texture="knight.png" offset="0 0 0" scale="0.14" angle="0 1" />
+<mesh name="archer" mesh="archer" texture="archer.png" offset="0 -0.8 0" scale="0.12" angle="0 1" />
+<mesh name="windmill" mesh="windmill" texture="windmill.png" offset="0 0 0" transparent="1" scale="1.0" angle="0 1" />
+<mesh name="barrel" mesh="barrel" texture="barrel.png" offset="0 0 0" transparent="1" scale="0.02" angle="0 1" />
+<mesh name="crate" mesh="crate" texture="crate.png" offset="0 0 0" transparent="1" scale="0.02" angle="0 1" />
