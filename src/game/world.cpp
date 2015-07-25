@@ -15,15 +15,15 @@ auto makeMats(PModel model) {
 }
 
 World::World() : m_time_diff(0) {
-	m_level = res::models()["level1"];
+	m_level = res::models()["level2"];
 	m_human = make_unique<ModelEntity>(
 		ModelEntityDesc{"human", "human", float3(0, 0, 0), 1.0f, 0.0f, false});
 	m_rock = make_unique<ModelEntity>(
 		ModelEntityDesc{"rock", "rock", float3(0, 0, 0), 1.0f, 0.0f, false});
 
 	m_level_materials = makeMats(m_level);
-	m_human->setPos(float3(0, 75.0f, 0));
-	m_rock->setPos(float3(10, 75.0f, 10.0f));
+	m_human->setPos(float3(0, 200.0f, 0));
+	m_rock->setPos(float3(10, 195.0f, 10.0f));
 
 	m_physics = make_unique<physics::PhysWorld>(m_level, 0.01f);
 
@@ -47,7 +47,6 @@ void World::draw(Renderer &out) const {
 	m_level->draw(out, *m_level_materials);
 	m_human->draw(out);
 	m_rock->draw(out);
-
 	m_physics->debugDraw(out);
 }
 

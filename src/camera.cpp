@@ -10,7 +10,7 @@ Camera::Camera(const float3 &pos, const float3 &target_up_vector, const float3 &
 
 Camera::Camera()
 	: Camera(float3(0, 0, 0), float3(0, 1, 0), float3(1, 0, 0), degToRad(60.0f), 16.0f / 9.0f, 1.0f,
-			 1000.0f) {}
+			 10000.0f) {}
 
 const Matrix4 Camera::viewMatrix() const { return fwk::lookAt(m_pos, m_target, up()); }
 const Matrix4 Camera::projectionMatrix() const {

@@ -19,6 +19,7 @@ const AssetInfo assets[] = {
 							{"sisyphus", "human", "Human|Armature"},
 							{"rock"},
 							{"level1"},
+							{"level2"},
 							{"helpers/arrow"},
 							{"helpers/axis_arrow"}};
 

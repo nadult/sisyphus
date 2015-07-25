@@ -69,6 +69,7 @@ PhysWorld::PhysWorld(PModel level, float scale)
 			new btDefaultMotionState(btTransform({0, 0, 0, 1}, {0, 0, 0}));
 		btRigidBody *ground = new btRigidBody(
 				btRigidBody::btRigidBodyConstructionInfo(0, groundMotionState, trimeshShape, {0, 0, 0}));
+		ground->setCollisionFlags(ground->getCollisionFlags() | btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT);
 		world.addRigidBody(ground);
 }
 
