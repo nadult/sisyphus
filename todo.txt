@@ -1,0 +1,18 @@
+Do zrobienia:
+
+- 
+
+- animacja dla postaci, ręce powinny być na kamieniu
+  - podstawowa animacja (minimum 2 klatki kluczowe) (kinda DONE)
+  - proste IK dla pozycji dloni / stóp?
+
+- zwykla animacja chodzenia
+
+
+- symulacja toczenia się kamienia po terenie
+  - bullet physics?
+- kolizje między postacią a kamieniem
+  - bullet?
+
+
+

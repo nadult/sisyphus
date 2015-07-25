@@ -66,6 +66,7 @@ flags = [
 '-Irecast/RecastDemo/Include',
 '-Irecast/RecastDemo/Contrib',
 '-Irecast/RecastDemo/Contrib/fastlz',
+'-I/usr/include/bullet/',
 '-isystem',
 '/usr/include',
 '-isystem',

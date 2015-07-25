@@ -10,7 +10,7 @@ _dummy := $(shell [ -d $(BUILD_DIR)/game/actions ] || mkdir -p $(BUILD_DIR)/game
 _dummy := $(shell [ -d $(BUILD_DIR)/game/orders ] || mkdir -p $(BUILD_DIR)/game/orders)
 _dummy := $(shell [ -d $(BUILD_DIR)/io ] || mkdir -p $(BUILD_DIR)/io)
 
-SHARED_SRC=game_renderer camera base sprite \
+SHARED_SRC=game_renderer camera base sprite physics \
 		   game/base game/entity game/animator game/world \
 		   game/model_entity game/impact io/game_controller io/camera_controller
 
@@ -46,8 +46,8 @@ include $(FWK_DIR)/Makefile.include
 
 LIBS=
 
-LINUX_LIBS=$(LIBS) $(LINUX_FWK_LIBS)
-MINGW_LIBS=$(LIBS) $(MINGW_FWK_LIBS)
+LINUX_LIBS=$(LIBS) $(LINUX_FWK_LIBS) `$(LINUX_PKG_CONFIG) --libs bullet`
+MINGW_LIBS=$(LIBS) $(MINGW_FWK_LIBS) `$(MINGW_PKG_CONFIG) --libs bullet`
 
 INCLUDES=-Isrc/ $(FWK_INCLUDES)
 
@@ -56,8 +56,8 @@ NICE_FLAGS=-Woverloaded-virtual -Wnon-virtual-dtor -Werror=return-type -Wno-reor
 
 FLAGS+=-std=c++14 -ggdb -pthread -Wall $(NICE_FLAGS) $(INCLUDES)
 
-LINUX_FLAGS=$(FLAGS) 
-MINGW_FLAGS=$(FLAGS)
+LINUX_FLAGS=$(FLAGS) `$(LINUX_PKG_CONFIG) --cflags bullet` 
+MINGW_FLAGS=$(FLAGS) `$(MINGW_PKG_CONFIG) --cflags bullet`
 
 LINUX_CXX=clang++
 LINUX_STRIP=strip
