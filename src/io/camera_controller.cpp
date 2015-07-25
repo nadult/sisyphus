@@ -52,8 +52,8 @@ void CameraController::handleInput(const GfxDevice &device, float time_diff) {
 			camera_rot -= 1.0f;
 	}
 
-	camera_move *= 15.0f * time_diff;
-	camera_rot *= 1.5f * time_diff;
+	camera_move *= 30.0f * time_diff;
+	camera_rot *= 2.0f * time_diff;
 
 	m_target_camera_pos += camera_move;
 	m_target_pos += camera_move;

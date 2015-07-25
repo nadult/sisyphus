@@ -12,8 +12,10 @@ namespace io {
 
 GameController::GameController(const IRect &viewport)
 	: m_viewport(viewport), m_camera_controller(World::instance(), viewport) {
-		float3 source_pos(-50, 30, -50);
-		float3 target_pos(0, 20, 0);
+	auto *world = World::instance();
+
+	float3 target_pos = world->human()->pos();
+	float3 source_pos = target_pos + float3(0, 20, -50);
 	m_camera_controller.setCamera(source_pos, target_pos);
 }
 
@@ -51,9 +53,8 @@ void GameController::drawView(Renderer &out, GameRenderer &out2d) const {
 
 	auto &font = out2d.font();
 
-/*	if(m_cursor)
-		font.draw(FRect(0, 20, 300, 40), {Color::white, Color::black},
-				  format("Cursor: (%.2f %.2f %.2f)", m_cursor->x, m_cursor->y, m_cursor->z));*/
+	/*	if(m_cursor)
+			font.draw(FRect(0, 20, 300, 40), {Color::white, Color::black},
+					  format("Cursor: (%.2f %.2f %.2f)", m_cursor->x, m_cursor->y, m_cursor->z));*/
 }
-
 }

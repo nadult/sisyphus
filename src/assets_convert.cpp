@@ -17,6 +17,7 @@ struct AssetInfo {
 
 const AssetInfo assets[] = {
 							{"human1", "human", "Human|Armature"},
+							{"rock"},
 							{"level1"},
 							{"helpers/arrow"},
 							{"helpers/axis_arrow"}};

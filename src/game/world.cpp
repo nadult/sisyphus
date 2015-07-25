@@ -15,10 +15,12 @@ namespace game {
 
 	World::World() :m_time_diff(0) {
 		m_level = res::models()["level1"];
-		ModelEntityDesc desc{"human", "human", float3(0, 0, 0), 0.5f, 0.0f, false};
-		m_human = make_unique<ModelEntity>(desc);
+		m_human = make_unique<ModelEntity>(ModelEntityDesc{"human", "human", float3(0, 0, 0), 1.0f, 0.0f, false});
+		m_rock = make_unique<ModelEntity>(ModelEntityDesc{"rock", "rock", float3(0, 0, 0), 1.0f, 0.0f, false});
+
 		m_level_materials = makeMats(m_level);
-		m_human->setPos(float3(0, 15.0f, 0));
+		m_human->setPos(float3(0, 70.0f, 0));
+		m_rock->setPos(float3(10, 75.0f, 10.0f));
 	}
 		
 	void World::simulate(double time_diff) {
@@ -29,6 +31,7 @@ namespace game {
 		std::map<string, PMaterial> level_mats;
 		m_level->draw(out, *m_level_materials);
 		m_human->draw(out);
+		m_rock->draw(out);
 	}
 
 	World *World::instance() {
