@@ -1,5 +1,6 @@
 *.swp
 *.vim
+*.blend1
 /Makefile.local
 /.ycm_extra_conf.pyc
 /game

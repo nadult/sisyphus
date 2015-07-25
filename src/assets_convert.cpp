@@ -16,7 +16,7 @@ struct AssetInfo {
 };
 
 const AssetInfo assets[] = {
-							{"human1", "human", "Human|Armature"},
+							{"sisyphus", "human", "Human|Armature"},
 							{"rock"},
 							{"level1"},
 							{"helpers/arrow"},
