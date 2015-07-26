@@ -21,6 +21,7 @@ void GameController::handleInput(const GfxDevice &device, float time_diff) {
 
 	float rot = 0.0f;
 	float3 move;
+	bool run = false;
 
 	for(const auto &event : device.inputEvents()) {
 		if(event.keyPressed(InputKey::left))
@@ -31,9 +32,11 @@ void GameController::handleInput(const GfxDevice &device, float time_diff) {
 			move += float3(0, 0, 1);
 		if(event.keyPressed(InputKey::down))
 			move -= float3(0, 0, 1);
+		if(event.keyPressed(InputKey::lshift))
+			run = true;
 	}
 
-	m_world->humanControl()->move(move, rot);
+	m_world->humanControl()->move(move, rot, run);
 }
 
 void GameController::tick(double time_diff) { m_camera_controller.tick(time_diff); }

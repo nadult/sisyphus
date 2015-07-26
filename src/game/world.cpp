@@ -30,9 +30,9 @@ World::World() : m_time_diff(0) {
 
 	m_physics = make_unique<physics::PhysWorld>(m_level, 0.01f);
 	m_phys_rock =
-		make_unique<physics::RigidBody>(std::move(m_physics->addSphere(m_rock->pos(), 8.5f, 1.0f)));
-	m_phys_human = make_unique<physics::Character>(
-		std::move(m_physics->addCharacter(m_human->pos() + float3(0, 20, 0), 2.0f, 10.0f, 1.0f)));
+		make_unique<physics::RigidBody>(std::move(m_physics->addSphere(m_rock->pos(), 7.5f, 20.0f)));
+	m_phys_human = make_unique<physics::RigidBody>(
+		std::move(m_physics->addCapsule(m_human->pos(), 1.0f, 1000.0f, 1.0f)));
 
 	m_human_control = make_unique<HumanControl>(this, m_human.get(), m_phys_human.get());
 
@@ -58,7 +58,7 @@ void World::draw(Renderer &out) const {
 	std::map<string, PMaterial> level_mats;
 	m_level->draw(out, *m_level_materials);
 	m_rock->draw(out);
-	m_physics->debugDraw(out);
+//	m_physics->debugDraw(out);
 	m_human->draw(out);
 }
 }

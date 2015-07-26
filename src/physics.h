@@ -64,6 +64,7 @@ class RigidBody {
 	Quat getRotation() const;
 	float3 getPosition() const;
 	void move(const float3 &);
+	btRigidBody *ptr() { return m_ptr; }
 
   private:
 	RigidBody(const PhysWorld *, btRigidBody *ptr);

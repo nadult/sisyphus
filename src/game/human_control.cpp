@@ -1,10 +1,11 @@
 #include "game/human_control.h"
 #include "game/world.h"
 #include "game/animator.h"
+#include "physics.h"
 
 namespace game {
 
-HumanControl::HumanControl(World *world, ModelEntity *human, physics::Character *phys)
+HumanControl::HumanControl(World *world, ModelEntity *human, physics::RigidBody *phys)
 	: m_world(world), m_human(human), m_phys(phys), m_dir(0, 1), m_walk_animator(m_human->model()), m_push_animator(m_human->model()) {
 	m_dir = normalize(m_world->rock()->pos() - m_world->human()->pos()).xz();
 	m_pose = m_walk_animator.modelPose();
@@ -13,7 +14,7 @@ HumanControl::HumanControl(World *world, ModelEntity *human, physics::Character 
 
 }
 
-void HumanControl::move(const float3 &in, float rot) {
+void HumanControl::move(const float3 &in, float rot, bool run) {
 	float movefw = clamp(in.z, -0.5f, 1.0f);
 
 //	float src_height = m_world->getHeight(m_human->pos().xz());
@@ -22,14 +23,15 @@ void HumanControl::move(const float3 &in, float rot) {
 	if(fabsf(rot) > 0.01f && fabsf(movefw) < 0.01f)
 		movefw = 0.25f;
 
+	float limit = run? 50.0f : 20.0f;
 	if(fabsf(movefw) > 0.01f) {
-		float inc = clamp((20.0f - fabsf(m_move_speed)) * 0.1f, 0.1f, 1.0f) * movefw;
+		float inc = clamp((limit - fabsf(m_move_speed)) * 0.1f, 0.1f, 1.0f) * movefw;
 		m_move_speed += inc;
 	}
 	if((movefw > 0) != (m_move_speed > 0))
 		m_move_speed *= 0.9f;
 
-	m_move_speed = clamp(m_move_speed, -20.0f * fabsf(movefw), 20.0f * fabsf(movefw));
+	m_move_speed = clamp(m_move_speed, -limit * fabsf(movefw), limit * fabsf(movefw));
 	m_move_rot = -rot * 3.0f;
 
 }
@@ -43,25 +45,50 @@ static Pose blendPose(Pose a, Pose b, float t) {
 	}
 	return Pose(std::move(out), a.name_mapping);
 }
+	
+static btVector3 toBt(const float3 &v) { return btVector3(v.x, v.y, v.z); }
+
+static float3 fromBt(const btVector3 &v) { return float3(v.x(), v.y(), v.z()); }
 
 void HumanControl::update(double time_diff) {
 	m_dir = rotateVector(m_dir, m_move_rot * time_diff);
 	float2 mv = m_dir * m_move_speed;
 
-	float2 new_pos_xz = m_human->pos().xz() + mv * time_diff;
-	float3 new_pos = float3(new_pos_xz[0], m_world->getHeight(new_pos_xz), new_pos_xz[1]);
+	auto *phys = m_phys->ptr();
+	float3 vec = fromBt(phys->getLinearVelocity());
+	auto mvp = m_dir * m_move_speed * time_diff;
+
+	float3 new_pos = m_phys->getPosition() - float3(0, 5, 0);
+//	float dist = distance(m_phys->getPosition().xz(), m_world->physRock()->getPosition().xz());
+//	float vec_mul = clamp(dist - 12.5f, 0.0f, 1.0f);
+//	vec = vec * vec_mul;
+	phys->setLinearVelocity(toBt(float3(mvp.x, 0, mvp.y)));
+
+	{
+		btTransform newTrans;
+		phys->getMotionState()->getWorldTransform(newTrans);
+		auto orig = newTrans.getOrigin();
+		orig.setY(m_world->getHeight(float2(orig.x(), orig.z())));
+		newTrans.setOrigin(orig);
+		phys->getMotionState()->setWorldTransform(newTrans);
+	}
+
+
+//	float2 new_pos_xz = m_human->pos().xz() + mv * time_diff;
+	new_pos.y = m_world->getHeight(new_pos.xz());
 //	printf("new_pos: %f %f %f\n", new_pos.x, new_pos.y, new_pos.z);
 	m_human->setPos(new_pos);
 
 	Quat rot = rotationBetween(float3(0, 0, 1), float3(m_dir[0], 0, m_dir[1]));
 	m_human->setRotation(rot);
+	
 
 	auto *rock = m_world->rock();
-	float rock_dist = distance(rock->pos().xz(), m_human->pos().xz()) - 8.0f;
+	float rock_dist = distance(rock->pos().xz(), m_human->pos().xz()) - 15.0f;
 	float rock_angle; {
 		float2 rock_vec = (rock->pos() - m_human->pos()).xz();
 		rock_angle = angleDistance(vectorToAngle(normalize(rock_vec)), vectorToAngle(normalize(m_dir)));
-		rock_angle = clamp(rock_angle - constant::pi * 0.1f, 0.0f, 1.0f);
+		rock_angle = clamp(rock_angle - constant::pi * 0.2f, 0.0f, 1.0f);
 
 	}
 	m_move_push_blend = clamp(1.0f - rock_dist * 0.25f, 0.0f, 1.0f) * clamp(constant::pi * 0.25f - rock_angle, 0.0f, 1.0f);

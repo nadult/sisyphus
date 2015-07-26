@@ -76,7 +76,7 @@ PhysWorld::PhysWorld(PModel level, float scale)
 		btRigidBody::btRigidBodyConstructionInfo(0, groundMotionState, trimeshShape, {0, 0, 0}));
 	ground->setCollisionFlags(ground->getCollisionFlags() |
 							  btCollisionObject::CF_DISABLE_VISUALIZE_OBJECT);
-	world.addRigidBody(ground);
+	world.addRigidBody(ground, 4, 2);
 }
 
 namespace {
@@ -125,7 +125,7 @@ RigidBody PhysWorld::addSphere(const float3 &pos, float radius, float mass) {
 
 	btRigidBody *body = new btRigidBody(
 		btRigidBody::btRigidBodyConstructionInfo(mass, motionState, shape, inertia));
-	world.addRigidBody(body);
+	world.addRigidBody(body, 2, 5);
 	// TODO: usunac body przy destrukcji swiata
 
 	return RigidBody(this, body);
@@ -157,7 +157,8 @@ RigidBody PhysWorld::addCapsule(const float3 &pos, float radius, float height, f
 
 	btRigidBody *body = new btRigidBody(rbInfo);
 	body->setAngularFactor(0);
-	world.addRigidBody(body);
+	body->setGravity(btVector3(0, 0, 0));
+	world.addRigidBody(body, 1, 2);
 	// TODO: usunac body przy destrukcji swiata
 
 	return RigidBody(this, body);
@@ -174,7 +175,7 @@ Character PhysWorld::addCharacter(const float3 &pos, float radius, float height,
 	ghostObject->setCollisionShape(capsule);
 	ghostObject->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
 
-	btScalar stepHeight = btScalar(0.05);
+	btScalar stepHeight = btScalar(0.1);
 	btKinematicCharacterController *character =
 		new btKinematicCharacterController(ghostObject, capsule, stepHeight);
 
@@ -205,7 +206,9 @@ Quat RigidBody::getRotation() const {
 	return Quat(rot.x(), rot.y(), rot.z(), rot.w());
 }
 
-void RigidBody::move(const float3 &v) { m_ptr->applyCentralImpulse(btVector3(v[0], v[1], v[2])); }
+void RigidBody::move(const float3 &v) {
+	m_ptr->applyCentralImpulse(btVector3(v[0], v[1], v[2]));
+}
 
 Character::Character(const PhysWorld *world, btKinematicCharacterController *character,
 					 btPairCachingGhostObject *ghost_obj)

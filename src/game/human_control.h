@@ -14,15 +14,15 @@ namespace game {
 
 	class HumanControl {
 	public:
-		HumanControl(World *world, ModelEntity *human, physics::Character*);
+		HumanControl(World *world, ModelEntity *human, physics::RigidBody*);
 
-		void move(const float3 &move, float rot);
+		void move(const float3 &move, float rot, bool);
 		void update(double time_diff);
 
 	private:
 		World *m_world;
 		ModelEntity *m_human;
-		physics::Character *m_phys;
+		physics::RigidBody *m_phys;
 
 		Animator m_walk_animator;
 		Animator m_push_animator;
