@@ -1,4 +1,6 @@
 <model>
+	<node name="Rock" pos="-511.250153 -9.182531 -532.290405" scale="8 8 8"/>
+	<node name="Spawn" pos="-525.725464 -12.8404 -539.229187" scale="4 4 4"/>
 	<node name="Grid.001" mesh_id="0" scale="1000 1000 1000"/>
 	<node name="Point" pos="0 272.24469 0" scale="2 1 2"/>
 	<mesh>

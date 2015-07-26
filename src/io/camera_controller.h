@@ -21,8 +21,7 @@ class CameraController {
 	const Camera &camera() const { return m_camera; }
 	Segment screenRay(const float2 &screen_pos) const;
 	Frustum screenFrustum(const FRect &rect) const;
-
-	void setCamera(const float3 &source, const float3 &target);
+	void updatePos();
 
   private:
 	float probeHeightMap(float3 pos) const;
@@ -33,8 +32,9 @@ class CameraController {
 	IRect m_viewport;
 	game::World *m_world;
 	Camera m_camera;
-	float3 m_target_camera_pos;
-	float3 m_target_pos;
+
+	float3 m_camera_pos[2];
+	float3 m_target_pos[2];
 };
 }
 

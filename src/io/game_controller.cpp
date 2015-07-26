@@ -4,24 +4,44 @@
 #include "io/game_controller.h"
 #include "game_renderer.h"
 #include "game/world.h"
+#include "game/human_control.h"
 #include <algorithm>
 
 using namespace game;
 
 namespace io {
 
-GameController::GameController(const IRect &viewport)
-	: m_viewport(viewport), m_camera_controller(World::instance(), viewport) {
-	auto *world = World::instance();
-
-	float3 target_pos = world->human()->pos();
-	float3 source_pos = target_pos + float3(0, 20, -50);
-	m_camera_controller.setCamera(source_pos, target_pos);
+GameController::GameController(game::World *world, const IRect &viewport)
+	: m_viewport(viewport), m_world(world), m_camera_controller(world, viewport) {
 }
 
 void GameController::handleInput(const GfxDevice &device, float time_diff) {
 	// TODO: events should be filtered
 	m_camera_controller.handleInput(device, time_diff);
+
+	float rot = 0.0f;
+	float3 move;
+
+	for(const auto &event : device.inputEvents()) {
+		if(event.keyPressed('a'))
+			move -= float3(1, 0, 0);
+		if(event.keyPressed('d'))
+			move += float3(1, 0, 0);
+		if(event.keyPressed('s'))
+			move -= float3(0, 0, 1);
+		if(event.keyPressed('w'))
+			move += float3(0, 0, 1);
+		if(event.keyPressed('r'))
+			move += float3(0, 1, 0);
+		if(event.keyPressed('f'))
+			move -= float3(0, 1, 0);
+		if(event.keyPressed('q'))
+			rot += 1.0f;
+		if(event.keyPressed('e'))
+			rot -= 1.0f;
+	}
+
+	m_world->humanControl()->move(move, rot);
 }
 
 void GameController::tick(double time_diff) { m_camera_controller.tick(time_diff); }
@@ -46,7 +66,7 @@ void GameController::drawAxes(Renderer &out) const {
 void GameController::drawView(Renderer &out, GameRenderer &out2d) const {
 	out.setProjectionMatrix(camera().projectionMatrix());
 	out.setViewMatrix(camera().viewMatrix());
-	World::instance()->draw(out);
+	m_world->draw(out);
 	drawAxes(out);
 
 	TextFormatter main_text, log;

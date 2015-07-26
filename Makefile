@@ -11,8 +11,8 @@ _dummy := $(shell [ -d $(BUILD_DIR)/game/orders ] || mkdir -p $(BUILD_DIR)/game/
 _dummy := $(shell [ -d $(BUILD_DIR)/io ] || mkdir -p $(BUILD_DIR)/io)
 
 SHARED_SRC=game_renderer camera base sprite physics \
-		   game/base game/entity game/animator game/world \
-		   game/model_entity game/impact io/game_controller io/camera_controller
+		   game/base game/entity game/animator game/world game/human_control \
+		   game/model_entity io/game_controller io/camera_controller \
 
 PROGRAM_SRC=game assets_convert 
 

@@ -28,12 +28,16 @@ class PhysWorld {
 
 	float scale() const { return m_scale; }
 
+	float getHeight(const float2 &pos_xz) const;
+	float rayCast(const Segment&) const;
+
   private:
-	btDbvtBroadphase broadphase;
+	btDbvtBroadphase *broadphase;
 	btDefaultCollisionConfiguration colConf;
-	btCollisionDispatcher dispatcher;
-	btSequentialImpulseConstraintSolver solver;
+	btCollisionDispatcher *dispatcher;
+	btSequentialImpulseConstraintSolver *solver;
 	btDiscreteDynamicsWorld world;
+	btBvhTriangleMeshShape *m_ground;
 	float m_scale;
 };
 

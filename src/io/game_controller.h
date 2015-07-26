@@ -13,7 +13,7 @@ namespace io {
 
 class GameController : public Controller {
   public:
-	GameController(const IRect &viewport);
+	GameController(game::World*, const IRect &viewport);
 	void handleInput(const GfxDevice &device, float time_diff) override;
 	void tick(double time_diff) override;
 	void drawView(Renderer &, GameRenderer &) const override;
@@ -24,6 +24,7 @@ class GameController : public Controller {
 	void drawAxes(Renderer &) const;
 
 	IRect m_viewport;
+	game::World *m_world;
 	Segment m_cursor;
 	game::EntityRef m_pointed_entity;
 	CameraController m_camera_controller;

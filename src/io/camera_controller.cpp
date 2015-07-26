@@ -13,57 +13,55 @@ CameraController::CameraController(World *world, const IRect &viewport)
 	: m_viewport(viewport), m_world(world) {
 	DASSERT(m_world);
 	m_camera.setAspectRatio(float(viewport.width()) / viewport.height());
-}
 
-void CameraController::setCamera(const float3 &source, const float3 &target) {
-	m_target_pos = target;
-	m_target_camera_pos = source;
-	//fixCameraTargets();
-	m_camera.setPos(m_target_camera_pos);
-	m_camera.setTarget(m_target_pos);
+	updatePos();
+	m_camera_pos[1] = m_camera_pos[0];
+	m_target_pos[1] = m_target_pos[0];
+	m_camera.setPos(m_camera_pos[0]);
+	m_camera.setTarget(m_target_pos[0]);
 }
 
 void CameraController::handleInput(const GfxDevice &device, float time_diff) {
-	float3 move_dirs[3] = {m_camera.right(), m_camera.forward(), m_camera.targetUp()};
-	for(int i = 0; i < 2; i++) {
-		move_dirs[i].y = 0.0f;
-		move_dirs[i] = normalize(move_dirs[i]);
-	}
+	/*	float3 move_dirs[3] = {m_camera.right(), m_camera.forward(), m_camera.targetUp()};
+		for(int i = 0; i < 2; i++) {
+			move_dirs[i].y = 0.0f;
+			move_dirs[i] = normalize(move_dirs[i]);
+		}
 
-	float camera_rot = 0.0f;
-	float3 camera_move;
+		float camera_rot = 0.0f;
+		float3 camera_move;
 
-	for(const auto &event : device.inputEvents()) {
-		if(event.keyPressed('a'))
-			camera_move -= move_dirs[0];
-		if(event.keyPressed('d'))
-			camera_move += move_dirs[0];
-		if(event.keyPressed('s'))
-			camera_move -= move_dirs[1];
-		if(event.keyPressed('w'))
-			camera_move += move_dirs[1];
-		if(event.keyPressed('r'))
-			camera_move += move_dirs[2];
-		if(event.keyPressed('f'))
-			camera_move -= move_dirs[2];
-		if(event.keyPressed('q'))
-			camera_rot += 1.0f;
-		if(event.keyPressed('e'))
-			camera_rot -= 1.0f;
-	}
+		for(const auto &event : device.inputEvents()) {
+			if(event.keyPressed('a'))
+				camera_move -= move_dirs[0];
+			if(event.keyPressed('d'))
+				camera_move += move_dirs[0];
+			if(event.keyPressed('s'))
+				camera_move -= move_dirs[1];
+			if(event.keyPressed('w'))
+				camera_move += move_dirs[1];
+			if(event.keyPressed('r'))
+				camera_move += move_dirs[2];
+			if(event.keyPressed('f'))
+				camera_move -= move_dirs[2];
+			if(event.keyPressed('q'))
+				camera_rot += 1.0f;
+			if(event.keyPressed('e'))
+				camera_rot -= 1.0f;
+		}
 
-	camera_move *= 100.0f * time_diff;
-	camera_rot *= 3.0f * time_diff;
+		camera_move *= 100.0f * time_diff;
+		camera_rot *= 3.0f * time_diff;
 
-	m_target_camera_pos += camera_move;
-	m_target_pos += camera_move;
+		m_target_camera_pos += camera_move;
+		m_target_pos += camera_move;
 
-	if(fabs(camera_rot) > constant::epsilon) {
-		float3 rot_vec =
-			rotateVector(m_target_camera_pos - m_target_pos, float3(0, 1, 0), camera_rot);
-		m_target_camera_pos = m_target_pos + rot_vec;
-	}
-	//fixCameraTargets();
+		if(fabs(camera_rot) > constant::epsilon) {
+			float3 rot_vec =
+				rotateVector(m_target_camera_pos - m_target_pos, float3(0, 1, 0), camera_rot);
+			m_target_camera_pos = m_target_pos + rot_vec;
+		}
+		//fixCameraTargets();*/
 }
 
 /*
@@ -93,9 +91,23 @@ void CameraController::fixCameraTargets() {
 
 template <class T> static T niceBlend(const T &src, const T &dst) { return lerp(src, dst, 0.05f); }
 
+void CameraController::updatePos() {
+	float3 hpos = m_world->human()->pos();
+	float3 rpos = m_world->rock()->pos();
+
+	m_target_pos[0] = (hpos + rpos) * 0.5f;
+	m_camera_pos[0] = hpos + normalize(hpos - m_target_pos[0]) * 30.0f + float3(0, 25, 0);
+}
+
 void CameraController::tick(double time_diff) {
-	m_camera.setPos(niceBlend(m_camera.pos(), m_target_camera_pos));
-	m_camera.setTarget(niceBlend(m_camera.target(), m_target_pos));
+	updatePos();
+	float3 cam_pos = m_camera_pos[1] = niceBlend(m_camera_pos[1], m_camera_pos[0]);
+	float3 tgt_pos = m_target_pos[1] = niceBlend(m_target_pos[1], m_target_pos[0]);
+
+	cam_pos.y = max(cam_pos.y, m_world->getHeight(cam_pos.xz()) + 10.0f);
+
+	m_camera.setPos(cam_pos);
+	m_camera.setTarget(tgt_pos);
 }
 
 Segment CameraController::screenRay(const float2 &screen_pos) const {

@@ -16,8 +16,7 @@ class Game {
   public:
 	Game(const IRect &viewport)
 		: m_viewport(viewport) {
-
-		m_controller = make_unique<io::GameController>(viewport);
+		m_controller = make_unique<io::GameController>(&m_world, viewport);
 	}
 
 	void handleInput(GfxDevice &device, float time_diff) {
@@ -27,7 +26,7 @@ class Game {
 	void tick(float time_diff) {
 		FWK_PROFILE("Game::tick");
 		m_controller->tick(time_diff);
-		World::instance()->simulate(time_diff);
+		m_world.simulate(time_diff);
 
 		m_frame_logs.clear();
 		for(auto &log : getLogs()) {
@@ -67,6 +66,7 @@ class Game {
 	unique_ptr<io::Controller> m_controller;
 	vector<string> m_frame_logs;
 	vector<string> m_logs;
+	game::World m_world;
 };
 
 static Game *s_game = nullptr;
