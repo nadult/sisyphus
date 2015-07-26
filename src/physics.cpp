@@ -92,9 +92,9 @@ namespace {
 
 			float3 mid = (tri1.a() + tri1.b() + tri1.c()) / 3.0f;
 			float dist = distance(seg.origin(), mid);
-			min_dist = min(min_dist, dist);
-//			min_dist = min(min_dist, intersection(seg, tri1));
-//			min_dist = min(min_dist, intersection(seg, tri2));
+
+			min_dist = min(min_dist, intersection(seg, tri1));
+			min_dist = min(min_dist, intersection(seg, tri2));
 		}
 
 		Segment seg;
@@ -110,7 +110,7 @@ float PhysWorld::rayCast(const Segment &seg) const {
 }
 
 float PhysWorld::getHeight(const float2 &pos) const {
-	Segment seg(float3(pos[0], 1000.0f, pos[1]), float3(pos[0], 0.0f, pos[1]));
+	Segment seg(float3(pos[0], 10000.0f, pos[1]), float3(pos[0], -10000.0f, pos[1]));
 	float dist = rayCast(seg);
 	return dist < constant::inf ? seg.at(dist).y : 0.0f;
 }
@@ -179,7 +179,7 @@ Character PhysWorld::addCharacter(const float3 &pos, float radius, float height,
 		new btKinematicCharacterController(ghostObject, capsule, stepHeight);
 
 	world.addCollisionObject(ghostObject, btBroadphaseProxy::CharacterFilter,
-							 btBroadphaseProxy::StaticFilter | btBroadphaseProxy::DefaultFilter);
+							 btBroadphaseProxy::DefaultFilter);
 	world.addAction(character);
 
 	return Character(this, character, ghostObject);
@@ -209,7 +209,11 @@ void RigidBody::move(const float3 &v) { m_ptr->applyCentralImpulse(btVector3(v[0
 
 Character::Character(const PhysWorld *world, btKinematicCharacterController *character,
 					 btPairCachingGhostObject *ghost_obj)
-	: m_world(world), m_character(character), m_ghost_obj(ghost_obj) {}
+	: m_world(world), m_character(character), m_ghost_obj(ghost_obj) {
+	// m_character->setGravity(0.0f);
+}
+
+void Character::fix() {}
 
 float3 Character::getPosition() const {
 	btTransform trans = m_ghost_obj->getWorldTransform();

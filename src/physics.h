@@ -46,6 +46,7 @@ class Character {
 	float3 getPosition() const;
 	Matrix4 getTrans() const;
 
+	void fix();
 	void move(const float3 &);
 	void rotate(float angle);
 

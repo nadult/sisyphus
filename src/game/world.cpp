@@ -32,7 +32,7 @@ World::World() : m_time_diff(0) {
 	m_phys_rock =
 		make_unique<physics::RigidBody>(std::move(m_physics->addSphere(m_rock->pos(), 8.5f, 1.0f)));
 	m_phys_human = make_unique<physics::Character>(
-		std::move(m_physics->addCharacter(m_human->pos(), 2.0f, 10.0f, 1.0f)));
+		std::move(m_physics->addCharacter(m_human->pos() + float3(0, 20, 0), 2.0f, 10.0f, 1.0f)));
 
 	m_human_control = make_unique<HumanControl>(this, m_human.get(), m_phys_human.get());
 
