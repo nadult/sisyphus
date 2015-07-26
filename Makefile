@@ -9,10 +9,12 @@ _dummy := $(shell [ -d $(BUILD_DIR)/game ] || mkdir -p $(BUILD_DIR)/game)
 _dummy := $(shell [ -d $(BUILD_DIR)/game/actions ] || mkdir -p $(BUILD_DIR)/game/actions)
 _dummy := $(shell [ -d $(BUILD_DIR)/game/orders ] || mkdir -p $(BUILD_DIR)/game/orders)
 _dummy := $(shell [ -d $(BUILD_DIR)/io ] || mkdir -p $(BUILD_DIR)/io)
+_dummy := $(shell [ -d $(BUILD_DIR)/audio ] || mkdir -p $(BUILD_DIR)/audio)
 
 SHARED_SRC=game_renderer camera base sprite physics \
 		   game/base game/entity game/animator game/world game/human_control \
 		   game/model_entity io/game_controller io/camera_controller \
+		   audio/device audio/sound 
 
 PROGRAM_SRC=game assets_convert 
 

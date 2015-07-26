@@ -17,6 +17,8 @@ class Actor;
 class Animator;
 class Mind;
 
+DECLARE_ENUM(SoundType, normal, explosion, shooting, looping, background);
+
 using PEntity = unique_ptr<Entity>;
 using PAction = unique_ptr<Action>;
 using POrder = unique_ptr<Order>;
@@ -81,7 +83,7 @@ namespace Flags {
 	}
 }
 
-using EntityRef = Entity*;
+using EntityRef = Entity *;
 
 class Intersection {
   public:
@@ -105,7 +107,6 @@ class Intersection {
 	const Entity *m_ref;
 	float m_distance;
 };
-
 }
 
 #endif

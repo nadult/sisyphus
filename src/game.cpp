@@ -9,6 +9,7 @@
 #include "io/game_controller.h"
 #include <algorithm>
 #include <random>
+#include "audio/device.h"
 
 using namespace game;
 
@@ -106,7 +107,7 @@ bool main_loop(GfxDevice &device) {
 
 int safe_main(int argc, char **argv) {
 	double time = getTime();
-	int2 resolution(1200, 700);
+	int2 resolution(1024, 768);
 	bool full = false;
 
 	for(int n = 1; n < argc; n++) {
@@ -123,10 +124,14 @@ int safe_main(int argc, char **argv) {
 	auto &gfx_device = GfxDevice::instance();
 	gfx_device.createWindow("Sisyphus", resolution, full);
 
+	audio::initDevice();
+
 	Game game((IRect(resolution)));
 	s_game = &game;
 
 	gfx_device.runMainLoop(main_loop);
+
+	audio::freeDevice();
 
 	return 0;
 }
