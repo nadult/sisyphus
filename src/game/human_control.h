@@ -14,7 +14,7 @@ namespace game {
 
 	class HumanControl {
 	public:
-		HumanControl(World *world, ModelEntity *human, physics::RigidBody*);
+		HumanControl(World *world, ModelEntity *human, physics::Character*);
 
 		void move(const float3 &move, float rot);
 		void update(double time_diff);
@@ -22,13 +22,18 @@ namespace game {
 	private:
 		World *m_world;
 		ModelEntity *m_human;
-		physics::RigidBody *m_phys;
-		Animator m_animator;
+		physics::Character *m_phys;
+
+		Animator m_walk_animator;
+		Animator m_push_animator;
+
+		Pose m_pose;
 		float2 m_dir;
 		float3 m_vector;
 
 		float m_move_rot;
 		float m_move_speed;
+		float m_move_push_blend;
 	};
 
 }

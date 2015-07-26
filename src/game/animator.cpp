@@ -29,6 +29,11 @@ void Animator::setAnimation(const string &name, bool loop) {
 
 void Animator::tick(double time_diff) {
 	m_anim_pos += time_diff;
+	while(m_anim_pos < 0) {
+		DASSERT(m_anim_is_looped);
+		m_anim_pos += m_anim_length;
+	}
+
 	if(m_anim_pos >= m_anim_length) {
 		if(m_anim_is_looped)
 			m_anim_pos -= m_anim_length;

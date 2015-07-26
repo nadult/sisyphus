@@ -35,7 +35,7 @@ namespace game {
 		unique_ptr<physics::PhysWorld> m_physics;
 		unique_ptr<ModelEntity> m_rock;
 		unique_ptr<physics::RigidBody> m_phys_rock;
-		unique_ptr<physics::RigidBody> m_phys_human;
+		unique_ptr<physics::Character> m_phys_human;
 		unique_ptr<MaterialSet> m_level_materials;
 		
 		unique_ptr<ModelEntity> m_human;

@@ -14,7 +14,7 @@ struct ModelEntityDesc {
 	float3 visual_offset;
 	float visual_scale;
 	float visual_angle;
-	bool is_blended;
+	bool is_human;
 };
 
 class ModelEntity : public Entity {

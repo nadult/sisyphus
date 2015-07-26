@@ -21,7 +21,7 @@ World::World() : m_time_diff(0) {
 	auto rock_pos = m_level->findNode("Rock")->globalTrans().translation;
 
 	m_human = make_unique<ModelEntity>(
-		ModelEntityDesc{"human", "human", float3(0, 0, 0), 1.0f, 0.0f, false});
+		ModelEntityDesc{"human", "human", float3(0, 0, 0), 1.0f, 0.0f, true});
 	m_rock = make_unique<ModelEntity>(
 		ModelEntityDesc{"rock", "rock", float3(0, 0, 0), 1.0f, 0.0f, false});
 
@@ -31,8 +31,8 @@ World::World() : m_time_diff(0) {
 	m_physics = make_unique<physics::PhysWorld>(m_level, 0.01f);
 	m_phys_rock =
 		make_unique<physics::RigidBody>(std::move(m_physics->addSphere(m_rock->pos(), 8.5f, 1.0f)));
-	m_phys_human = make_unique<physics::RigidBody>(
-		std::move(m_physics->addCapsule(m_human->pos(), 2.0f, 8.0f, 1.0f)));
+	m_phys_human = make_unique<physics::Character>(
+		std::move(m_physics->addCharacter(m_human->pos(), 2.0f, 10.0f, 1.0f)));
 
 	m_human_control = make_unique<HumanControl>(this, m_human.get(), m_phys_human.get());
 
@@ -57,8 +57,8 @@ void World::simulate(double time_diff) {
 void World::draw(Renderer &out) const {
 	std::map<string, PMaterial> level_mats;
 	m_level->draw(out, *m_level_materials);
-	m_human->draw(out);
 	m_rock->draw(out);
 	m_physics->debugDraw(out);
+	m_human->draw(out);
 }
 }

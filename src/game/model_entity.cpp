@@ -22,16 +22,16 @@ static PModel makeModel(const ModelEntityDesc &desc) {
 	return model;
 }
 
-static MaterialSet makeMaterials(PModel model) {
+static MaterialSet makeMaterials(const ModelEntityDesc &desc, PModel model) {
 	std::map<string, PMaterial> mats;
 	for(const auto &def : model->materialDefs())
-		mats[def.name] = make_cow<Material>(meshProgram(), def.diffuse);
+		mats[def.name] = make_cow<Material>(meshProgram(), def.diffuse, desc.is_human? Material::flag_clear_depth : 0);
 
 	return MaterialSet(make_cow<Material>(), std::move(mats));
 }
 
 ModelEntity::ModelEntity(const ModelEntityDesc &desc)
-	: m_desc(desc), m_model(makeModel(m_desc)), m_materials(makeMaterials(m_model)) {
+	: m_desc(desc), m_model(makeModel(m_desc)), m_materials(makeMaterials(desc, m_model)) {
 	updateAnimState(m_model->animatePose(-1, 0));
 	//	XMLDocument doc;
 	//	m_model->saveToXML(doc.addChild("mesh"));
