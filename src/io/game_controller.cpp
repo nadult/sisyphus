@@ -23,22 +23,14 @@ void GameController::handleInput(const GfxDevice &device, float time_diff) {
 	float3 move;
 
 	for(const auto &event : device.inputEvents()) {
-		if(event.keyPressed('a'))
-			move -= float3(1, 0, 0);
-		if(event.keyPressed('d'))
-			move += float3(1, 0, 0);
-		if(event.keyPressed('s'))
-			move -= float3(0, 0, 1);
-		if(event.keyPressed('w'))
-			move += float3(0, 0, 1);
-		if(event.keyPressed('r'))
-			move += float3(0, 1, 0);
-		if(event.keyPressed('f'))
-			move -= float3(0, 1, 0);
-		if(event.keyPressed('q'))
+		if(event.keyPressed(InputKey::left))
 			rot += 1.0f;
-		if(event.keyPressed('e'))
+		if(event.keyPressed(InputKey::right))
 			rot -= 1.0f;
+		if(event.keyPressed(InputKey::up))
+			move += float3(0, 0, 1);
+		if(event.keyPressed(InputKey::down))
+			move -= float3(0, 0, 1);
 	}
 
 	m_world->humanControl()->move(move, rot);

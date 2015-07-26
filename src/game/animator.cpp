@@ -7,23 +7,25 @@ namespace game {
 
 Animator::Animator(PModel model) : m_model(std::move(model)) {
 	DASSERT(m_model);
-	setAnimation(AnimationId::idle, true);
+	setAnimation("Walk", true);
 }
 
-bool Animator::hasAnimation(AnimationId::Type anim_type) const {
-	return animIndex(anim_type) != -1;
-}
+void Animator::setAnimation(const string &name, bool loop) {
+	int anim_id = -1;
+	for(int n = 0; n < (int)m_model->anims().size(); n++)
+		if(m_model->anims()[n].name() == name) {
+			anim_id = n;
+			break;
+		}
+	ASSERT(anim_id != -1);
 
-void Animator::setAnimation(AnimationId::Type anim_id, bool loop) {
+
 	m_anim_id = anim_id;
 	m_anim_pos = 0.0f;
-	int idx = animIndex(anim_id);
-	m_anim_length = idx == -1 ? 1.0f : m_model->anim(idx).length();
+	m_anim_length = m_model->anim(m_anim_id).length();
 	m_anim_is_looped = loop;
 	m_anim_is_finished = false;
 }
-
-AnimationId::Type Animator::currentAnimation() const { return m_anim_id; }
 
 void Animator::tick(double time_diff) {
 	m_anim_pos += time_diff;
@@ -37,15 +39,6 @@ void Animator::tick(double time_diff) {
 	}
 }
 
-Pose Animator::modelPose() const { return m_model->animatePose(animIndex(m_anim_id), m_anim_pos); }
+Pose Animator::modelPose() const { return m_model->animatePose(m_anim_id, m_anim_pos); }
 
-int Animator::animIndex(AnimationId::Type anim_id) const {
-	const char *name = toString(anim_id);
-	for(int a = 0; a < m_model->animCount(); a++) {
-		const auto &anim = m_model->anim(a);
-		if(caseEqual(anim.name(), name))
-			return a;
-	}
-	return -1;
-}
 }

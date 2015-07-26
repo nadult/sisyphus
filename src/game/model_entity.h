@@ -43,6 +43,9 @@ class ModelEntity : public Entity {
 	Matrix4 nodeTrans(const string &name) const;
 
 	Mesh toMesh() const;
+	PModel model() const { return m_model; }
+
+	void setPose(Pose pose) { m_model_pose = pose; }
 
   protected:
 	void updateAnimState(const Pose &);

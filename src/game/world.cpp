@@ -37,7 +37,9 @@ World::World() : m_time_diff(0) {
 	m_level_materials = makeMats(m_level);
 }
 
-World::~World() = default;
+World::~World() {
+	m_human_control.reset();
+}
 
 float World::getHeight(const float2 &pos_xz) const { return m_physics->getHeight(pos_xz); }
 

@@ -107,17 +107,21 @@ bool main_loop(GfxDevice &device) {
 int safe_main(int argc, char **argv) {
 	double time = getTime();
 	int2 resolution(1200, 700);
-
-	auto &gfx_device = GfxDevice::instance();
-	gfx_device.createWindow("Sisyphus", resolution, false);
+	bool full = false;
 
 	for(int n = 1; n < argc; n++) {
 		if(string("--res") == argv[n]) {
 			resolution.x = atoi(argv[n + 1]);
 			resolution.y = atoi(argv[n + 2]);
 			ASSERT(n + 3 <= argc);
+			n += 2;
 		}
+		else if(string("--fullscreen") == argv[n])
+			full = true;
 	}
+	
+	auto &gfx_device = GfxDevice::instance();
+	gfx_device.createWindow("Sisyphus", resolution, full);
 
 	Game game((IRect(resolution)));
 	s_game = &game;
