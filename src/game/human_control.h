@@ -2,6 +2,9 @@
 
 #include "base.h"
 #include "game/animator.h"
+#include "physics.h"
+
+namespace physics { class RigidBody; }
 
 namespace game {
 
@@ -11,7 +14,7 @@ namespace game {
 
 	class HumanControl {
 	public:
-		HumanControl(World *world, ModelEntity *human);
+		HumanControl(World *world, ModelEntity *human, physics::RigidBody*);
 
 		void move(const float3 &move, float rot);
 		void update(double time_diff);
@@ -19,6 +22,7 @@ namespace game {
 	private:
 		World *m_world;
 		ModelEntity *m_human;
+		physics::RigidBody *m_phys;
 		Animator m_animator;
 		float2 m_dir;
 		float3 m_vector;

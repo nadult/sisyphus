@@ -31,8 +31,10 @@ World::World() : m_time_diff(0) {
 	m_physics = make_unique<physics::PhysWorld>(m_level, 0.01f);
 	m_phys_rock =
 		make_unique<physics::RigidBody>(std::move(m_physics->addSphere(m_rock->pos(), 8.5f, 1.0f)));
+	m_phys_human = make_unique<physics::RigidBody>(
+		std::move(m_physics->addCapsule(m_human->pos(), 2.0f, 8.0f, 1.0f)));
 
-	m_human_control = make_unique<HumanControl>(this, m_human.get());
+	m_human_control = make_unique<HumanControl>(this, m_human.get(), m_phys_human.get());
 
 	m_level_materials = makeMats(m_level);
 }

@@ -4,16 +4,16 @@
 
 namespace game {
 
-HumanControl::HumanControl(World *world, ModelEntity *human)
-	: m_world(world), m_human(human), m_dir(0, 1), m_animator(m_human->model()) {
+HumanControl::HumanControl(World *world, ModelEntity *human, physics::RigidBody *phys)
+	: m_world(world), m_human(human), m_phys(phys), m_dir(0, 1), m_animator(m_human->model()) {
 	m_dir = normalize(m_world->rock()->pos() - m_world->human()->pos()).xz();
 }
 
 void HumanControl::move(const float3 &in, float rot) {
 	float movefw = clamp(in.z, 0.0f, 1.0f);
 
-	float src_height = m_world->getHeight(m_human->pos().xz());
-	float dst_height = m_world->getHeight((m_human->pos() + float3(m_dir[0], 0, m_dir[1]) * movefw).xz());
+//	float src_height = m_world->getHeight(m_human->pos().xz());
+//	float dst_height = m_world->getHeight((m_human->pos() + float3(m_dir[0], 0, m_dir[1]) * movefw).xz());
 
 	if(fabs(rot) > 0.01f && movefw < 0.01f)
 		movefw = 0.25f;
