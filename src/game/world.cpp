@@ -1,7 +1,7 @@
 #include "game/world.h"
 #include "game/human_control.h"
 #include "physics.h"
-#include "audio/device.h"
+#include "fwk_audio.h"
 
 namespace game {
 
@@ -36,16 +36,14 @@ World::World() : m_time_diff(0) {
 		std::move(m_physics->addCapsule(m_human->pos(), 1.0f, 1000.0f, 1.0f)));
 
 	m_human_control = make_unique<HumanControl>(this, m_human.get(), m_phys_human.get());
-	auto id = audio::findSound("staczanie");
-	source_id = audio::playSound(id, SoundType::looping, float3(0, 0, 0), float3(0, 0, 0)); 
-	
-	audio::updateSource(audio::playSound(audio::findSound("ambient"), SoundType::background, float3(0, 0, 0), float3(0, 0, 0)), 0.25f);
 
+	OggStream roll_stream("data/sounds/staczanie.ogg"), ambient_stream("data/sounds/ambient.ogg");
+	auto &audio= AudioDevice::instance();
+	audio.playSound(make_shared<DSound>(roll_stream.makeSound()), SoundPos(), SoundConfig(0.25f, 1.0f, true)); 
+	audio.playSound(make_shared<DSound>(ambient_stream.makeSound()), SoundPos(), SoundConfig(0.1f, 1.0f, true)); 
 
 	m_level_materials = makeMats(m_level);
 }
-
-static float3 fromBt(const btVector3 &v) { return float3(v.x(), v.y(), v.z()); }
 
 World::~World() {
 	m_human_control.reset();
@@ -60,9 +58,6 @@ void World::simulate(double time_diff) {
 	m_rock->setPos(m_phys_rock->getPosition());
 	m_rock->setRotation(m_phys_rock->getRotation());
 	m_human_control->update(time_diff);
-
-	audio::setListener(float3(m_human->pos() - m_rock->pos()), float3(0, 0, 0), float3(0, 0, 1));
-	audio::updateSource(source_id, length(fromBt(m_phys_rock->ptr()->getLinearVelocity())));
 }
 
 void World::draw(Renderer &out) const {

@@ -7,6 +7,9 @@ class btCharacterControllerInterface;
 class btDynamicCharacterController;
 class btKinematicCharacterController;
 class btPairCachingGhostObject;
+	
+inline btVector3 toBt(const float3 &v) { return btVector3(v.x, v.y, v.z); }
+inline float3 fromBt(const btVector3 &v) { return float3(v.x(), v.y(), v.z()); }
 
 namespace source {
 class Level;

@@ -6,17 +6,16 @@
 
 #include "game/entity.h"
 #include "game/world.h"
-#include "io/controller.h"
 #include "io/camera_controller.h"
 
 namespace io {
 
-class GameController : public Controller {
+class GameController {
   public:
-	GameController(game::World*, const IRect &viewport);
-	void handleInput(const GfxDevice &device, float time_diff) override;
-	void tick(double time_diff) override;
-	void drawView(Renderer &, GameRenderer &) const override;
+	GameController(game::World *, const IRect &viewport);
+	void handleInput(const GfxDevice &device, float time_diff);
+	void tick(double time_diff);
+	void drawView(Renderer &, GameRenderer &) const;
 
 	const Camera &camera() const { return m_camera_controller.camera(); }
 

@@ -5,11 +5,11 @@
 #include "game_renderer.h"
 #include "fwk_opengl.h"
 #include "fwk_profile.h"
+#include "fwk_audio.h"
 #include "game/world.h"
 #include "io/game_controller.h"
 #include <algorithm>
 #include <random>
-#include "audio/device.h"
 
 using namespace game;
 
@@ -64,13 +64,15 @@ class Game {
   private:
 	IRect m_viewport;
 	mutable FRect m_max_extents;
-	unique_ptr<io::Controller> m_controller;
+	game::World m_world;
+	unique_ptr<io::GameController> m_controller;
 	vector<string> m_frame_logs;
 	vector<string> m_logs;
-	game::World m_world;
 };
 
 static Game *s_game = nullptr;
+static Renderer *renderer_3d;
+static GameRenderer *renderer_2d;
 
 bool main_loop(GfxDevice &device) {
 	DASSERT(s_game);
@@ -82,25 +84,20 @@ bool main_loop(GfxDevice &device) {
 	float time_diff = 1.0f / 60.0f;
 	s_game->handleInput(device, time_diff);
 	s_game->tick(time_diff);
+	AudioDevice::instance().tick();
 
-	Renderer renderer_3d;
-	GameRenderer renderer_2d(s_game->viewport());
-	s_game->draw(renderer_3d, renderer_2d);
+	for(auto &event : device.inputEvents()) {
+		if(event.keyDown(InputKey::esc) || event.type() == InputEvent::quit)
+			return false;
+	}
 
-	/*
-	for(const auto &event : device.inputEvents())
-			if(event.keyDown(InputKey::tab)) {
-				if(m_editor_mode) {
-				}
+	s_game->draw(*renderer_3d, *renderer_2d);
 
-				m_editor_mode ^= 1;
-			}*/
+	renderer_3d->render();
+	renderer_2d->render();
 
-	renderer_3d.render();
-	renderer_2d.render();
-
-	logText(getProfilerStats(), LogType::per_frame);
-	profilerNextFrame();
+	logText(Profiler::instance()->getStats(), LogType::per_frame);
+	Profiler::instance()->nextFrame();
 
 	return true;
 }
@@ -121,17 +118,20 @@ int safe_main(int argc, char **argv) {
 			full = true;
 	}
 	
-	auto &gfx_device = GfxDevice::instance();
+	GfxDevice gfx_device;
 	gfx_device.createWindow("Sisyphus", resolution, full);
 
-	audio::initDevice();
-
+	Profiler profiler;
+	AudioDevice audio_device;
 	Game game((IRect(resolution)));
 	s_game = &game;
+	
+	Renderer r3d;
+	GameRenderer r2d((IRect(resolution)));
+	renderer_3d = &r3d;
+	renderer_2d = &r2d;
 
 	gfx_device.runMainLoop(main_loop);
-
-	audio::freeDevice();
 
 	return 0;
 }

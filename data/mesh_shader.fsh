@@ -5,7 +5,7 @@ varying lowp vec4 color;
 varying mediump vec3 tpos;
 
 void main() {
-	mediump vec3 normal = normalize(cross(dFdx(tpos), dFdy(tpos)));
-	mediump float normal_shade = abs(dot(normal, vec3(0, 0, 1))) * 0.8 + 0.2;
-	gl_FragColor = color * normal_shade;
+  mediump vec3 normal = normalize(cross(dFdx(tpos), dFdy(tpos)));
+  mediump float normal_shade = abs(dot(normal, vec3(0, 0, 1))) * 0.8 + 0.2;
+  gl_FragColor = color * normal_shade;
 }

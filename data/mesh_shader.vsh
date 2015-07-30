@@ -10,8 +10,8 @@ varying vec4 color;
 varying vec3 tpos;
 
 void main() {
-	gl_Position = proj_view_matrix * vec4(in_pos, 1.0);
-	tpos = gl_Position.xyz;
-	tex_coord = in_tex_coord;
-	color = in_color * mesh_color;
+  gl_Position = proj_view_matrix * vec4(in_pos, 1.0);
+  tpos = gl_Position.xyz;
+  tex_coord = in_tex_coord;
+  color = in_color * mesh_color;
 }

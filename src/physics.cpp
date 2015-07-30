@@ -81,9 +81,6 @@ PhysWorld::PhysWorld(PModel level, float scale)
 
 namespace {
 
-	btVector3 toBt(const float3 &v) { return btVector3(v.x, v.y, v.z); }
-	float3 fromBt(const btVector3 &v) { return float3(v.x(), v.y(), v.z()); }
-
 	struct Callback : public btTriangleCallback {
 		Callback(const Segment &segment) : seg(segment), min_dist(constant::inf) {}
 		void processTriangle(btVector3 *triangle, int partId, int triangleIndex) override {

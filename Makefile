@@ -13,8 +13,7 @@ _dummy := $(shell [ -d $(BUILD_DIR)/audio ] || mkdir -p $(BUILD_DIR)/audio)
 
 SHARED_SRC=game_renderer camera base sprite physics \
 		   game/base game/entity game/animator game/world game/human_control \
-		   game/model_entity io/game_controller io/camera_controller \
-		   audio/device audio/sound 
+		   game/model_entity io/game_controller io/camera_controller
 
 PROGRAM_SRC=game assets_convert 
 
@@ -85,7 +84,7 @@ $(MINGW_PROGRAMS): %.exe: $(MINGW_SHARED_OBJECTS) $(BUILD_DIR)/%_.o $(MINGW_FWK_
 	$(MINGW_STRIP) $@
 
 HTML5_PRELOADS=data/
-HTML5_FLAGS=$(HTML5_FWK_FLAGS) $(INCLUDES) -s TOTAL_MEMORY=64000000
+HTML5_FLAGS=$(HTML5_FWK_FLAGS) $(INCLUDES) -O2 -s USE_BULLET=1 -s TOTAL_MEMORY=128000000 -s DISABLE_EXCEPTION_CATCHING=0 -s ALLOW_MEMORY_GROWTH=1 -s ASSERTIONS=2 --closure 0
 
 $(HTML5_PROGRAMS_SRC): output/%.html.cpp: src/%.cpp $(SHARED_SRC:%=src/%.cpp) $(HTML5_FWK_LIB)
 	cat $^ > $@
