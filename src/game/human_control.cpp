@@ -6,7 +6,7 @@
 namespace game {
 
 HumanControl::HumanControl(World *world, ModelEntity *human, physics::RigidBody *phys)
-	: m_world(world), m_human(human), m_phys(phys), m_dir(0, 1), m_walk_animator(m_human->model()), m_push_animator(m_human->model()) {
+	: m_world(world), m_human(human), m_phys(phys), m_walk_animator(m_human->model()), m_dir(0, 1), m_push_animator(m_human->model()) {
 	m_dir = normalize(m_world->rock()->pos() - m_world->human()->pos()).xz();
 	m_pose = m_walk_animator.modelPose();
 	m_push_animator.setAnimation("Pushing", true);
@@ -33,14 +33,14 @@ void HumanControl::move(const float3 &in, float rot, bool run) {
 
 }
 
-static Pose blendPose(Pose a, Pose b, float t) {
+static PPose blendPose(PPose a, PPose b, float t) {
 	vector<Matrix4> out;
-	for(int n = 0; n < (int)a.size(); n++) {
-		AffineTrans atrans(a.transforms[n]);
-		AffineTrans btrans(b.transforms[n]);
+	for(int n = 0; n < (int)a->size(); n++) {
+		AffineTrans atrans(a->transforms()[n]);
+		AffineTrans btrans(b->transforms()[n]);
 		out.emplace_back(lerp(atrans, btrans, t));
 	}
-	return Pose(std::move(out), a.name_mapping);
+	return make_immutable<Pose>(std::move(out), a->nameMap());
 }
 	
 void HumanControl::update(double time_diff) {

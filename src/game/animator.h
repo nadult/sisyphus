@@ -17,7 +17,7 @@ class Animator {
 	bool isAnimationFinished() const { return m_anim_is_finished; }
 
 	void tick(double time_diff);
-	Pose modelPose() const;
+	PPose modelPose() const;
 
 	int animId() const { return m_anim_id; }
 	double currentAnimPos() const { return m_anim_pos; }

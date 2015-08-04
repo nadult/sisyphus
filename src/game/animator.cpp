@@ -44,6 +44,6 @@ void Animator::tick(double time_diff) {
 	}
 }
 
-Pose Animator::modelPose() const { return m_model->animatePose(m_anim_id, m_anim_pos); }
+PPose Animator::modelPose() const { return m_model->animatePose(m_anim_id, m_anim_pos); }
 
 }

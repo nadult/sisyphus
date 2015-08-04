@@ -11,7 +11,7 @@ PProgram meshProgram() {
 		Shader vertex_shader(Shader::tVertex), fragment_shader(Shader::tFragment);
 		Loader("data/mesh_shader.vsh") >> vertex_shader;
 		Loader("data/mesh_shader.fsh") >> fragment_shader;
-		out = make_cow<Program>(vertex_shader, fragment_shader);
+		out = make_immutable<Program>(vertex_shader, fragment_shader);
 	}
 
 	return out;
@@ -25,9 +25,9 @@ static PModel makeModel(const ModelEntityDesc &desc) {
 static MaterialSet makeMaterials(const ModelEntityDesc &desc, PModel model) {
 	std::map<string, PMaterial> mats;
 	for(const auto &def : model->materialDefs())
-		mats[def.name] = make_cow<Material>(meshProgram(), def.diffuse, desc.is_human? Material::flag_clear_depth : 0);
+		mats[def.name] = make_immutable<Material>(meshProgram(), def.diffuse, desc.is_human? Material::flag_clear_depth : 0);
 
-	return MaterialSet(make_cow<Material>(), std::move(mats));
+	return MaterialSet(make_immutable<Material>(), std::move(mats));
 }
 
 ModelEntity::ModelEntity(const ModelEntityDesc &desc)
@@ -38,10 +38,10 @@ ModelEntity::ModelEntity(const ModelEntityDesc &desc)
 	//	Saver(m_desc.mesh_name + ".mesh") << doc;
 }
 
-void ModelEntity::updateAnimState(const Pose &new_pose) {
+void ModelEntity::updateAnimState(PPose new_pose) {
 	m_model_pose = new_pose;
 	m_bounding_box = m_model->boundingBox(m_model_pose);
-	DASSERT(m_model_pose.size() == m_model->nodes().size());
+	DASSERT(m_model->isValidPose(m_model_pose));
 }
 
 void ModelEntity::updateAnimVerts() const {

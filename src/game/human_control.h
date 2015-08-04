@@ -27,7 +27,7 @@ namespace game {
 		Animator m_walk_animator;
 		Animator m_push_animator;
 
-		Pose m_pose;
+		PPose m_pose;
 		float2 m_dir;
 		float3 m_vector;
 

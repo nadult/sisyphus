@@ -52,9 +52,9 @@ void GameController::drawAxes(Renderer &out) const {
 
 	out.pushViewMatrix();
 	out.setViewMatrix(translation(1.6, -0.9, -2) * Matrix4(trans.rotation));
-	arrow_mesh->draw(out, make_cow<Material>(Color::red), x_rot * scaling(0.03f));
-	arrow_mesh->draw(out, make_cow<Material>(Color::green), y_rot * scaling(0.03f));
-	arrow_mesh->draw(out, make_cow<Material>(Color::blue), z_rot * scaling(0.03f));
+	arrow_mesh->draw(out, make_immutable<Material>(Color::red), x_rot * scaling(0.03f));
+	arrow_mesh->draw(out, make_immutable<Material>(Color::green), y_rot * scaling(0.03f));
+	arrow_mesh->draw(out, make_immutable<Material>(Color::blue), z_rot * scaling(0.03f));
 	out.popViewMatrix();
 }
 

@@ -34,7 +34,7 @@ static const SpriteDesc &findDesc(const string &name) {
 
 Sprite::Sprite(const string &name) : m_desc(findDesc(name)) {
 	PTexture texture = res::textures()[m_desc.texture_name];
-	m_material = make_cow<Material>(texture);
+	m_material = make_immutable<Material>(texture);
 }
 
 void Sprite::draw(Renderer &out, const float3 &pos, const float2 &size, float anim_pos) const {

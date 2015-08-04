@@ -45,10 +45,10 @@ class ModelEntity : public Entity {
 	Mesh toMesh() const;
 	PModel model() const { return m_model; }
 
-	void setPose(Pose pose) { m_model_pose = pose; }
+	void setPose(PPose pose) { m_model_pose = pose; }
 
   protected:
-	void updateAnimState(const Pose &);
+	void updateAnimState(PPose);
 	void updateAnimVerts() const;
 
 	ModelEntityDesc m_desc;
@@ -57,7 +57,7 @@ class ModelEntity : public Entity {
 	PTexture m_texture;
 
   private:
-	Pose m_model_pose;
+	PPose m_model_pose;
 	FBox m_bounding_box;
 	bool m_is_looped;
 	bool m_is_finished;

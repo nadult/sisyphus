@@ -9,11 +9,11 @@ auto makeMats(PModel model) {
 	Shader vertex_shader(Shader::tVertex), fragment_shader(Shader::tFragment);
 	Loader("data/mesh_shader.vsh") >> vertex_shader;
 	Loader("data/mesh_shader.fsh") >> fragment_shader;
-	auto program = make_cow<Program>(vertex_shader, fragment_shader);
+	auto program = make_immutable<Program>(vertex_shader, fragment_shader);
 	std::map<string, PMaterial> mats;
 	for(auto mat : model->materialDefs())
-		mats.emplace(mat.name, make_cow<Material>(program, mat.diffuse));
-	return make_unique<MaterialSet>(make_cow<Material>(), mats);
+		mats.emplace(mat.name, make_immutable<Material>(program, mat.diffuse));
+	return make_unique<MaterialSet>(make_immutable<Material>(), mats);
 }
 
 World::World() : m_time_diff(0) {
@@ -45,9 +45,7 @@ World::World() : m_time_diff(0) {
 	m_level_materials = makeMats(m_level);
 }
 
-World::~World() {
-	m_human_control.reset();
-}
+World::~World() = default;
 
 float World::getHeight(const float2 &pos_xz) const { return m_physics->getHeight(pos_xz); }
 
